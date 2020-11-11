@@ -71,15 +71,16 @@ int contextSwitcher(Process_t* process) {
         pop %%rcx \n\
         pop %%rbx \n\
         pop %%rax \n\
+        popf \n\
         "
         : "+r" (processStackPointer)
         :
-        :
+        : "rax"
     );
 
     printf("SURVIVER\n");
 
-    process->stackPointer = processStackPointer;
+    // process->stackPointer = processStackPointer;
 
     return 0;
 }
