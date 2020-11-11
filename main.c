@@ -21,8 +21,11 @@ void initializeProcessControlBlock() {
 void sampleOneProcess() {
     int elem;
     for (;;) {
+        // printf("runtimeStackPointer: %p\n", runtimeStackPointer);
+
+
         printf("current stack location: %p\n", &elem);
-        printf("hello from p1\n", &elem);
+        printf("hello from p1\n");
         yeildRuntime();
     }
 }
@@ -31,7 +34,7 @@ void sampleTwoProcess() {
     int elem;
     for (;;) {
         printf("current stack location: %p\n", &elem);
-        printf("hello from p2\n", &elem);
+        printf("hello from p2\n");
         yeildRuntime();
     }
 }

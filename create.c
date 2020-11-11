@@ -12,13 +12,14 @@ void createProcess(void (*jumpTo)(void)) {
         exit(0);
     }
 
-    toReturn->stackPointer = malloc(STACKSIZE);
-    toReturn->instructionPointer = jumpTo;
-
-    // architecture
+    // architecture:
     // stack grows towards lower addresses
+    toReturn->stackPointer = malloc(STACKSIZE);
     toReturn->stackPointer -= sizeof(Context_t);
-    ((Context_t*) &toReturn->stackPointer)->rbp = toReturn->stackPointer;
+
+    // initialize context
+    ((Context_t*) toReturn->stackPointer)->rbp = toReturn->stackPointer + sizeof(Context_t) - sizeof(void*);
+    ((Context_t*) toReturn->stackPointer)->instructionPointer = jumpTo;
 
     enqueReady(toReturn);
 }

@@ -4,9 +4,10 @@ void yeildRuntime() {
     void* kernelEntryPoint = runtimeEntryPoint;
 
     asm ("\
+        mov %1, %%rax \n\
         jmp *%0 \n\
         "
-        : "+m" (kernelEntryPoint)
+        : "+m" (kernelEntryPoint), "+r" (runtimeStackPointer)
         :
         :
     );

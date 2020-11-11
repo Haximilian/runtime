@@ -42,6 +42,8 @@ Process_t* initialReady;
 Process_t* finalFree;
 Process_t* initialFree;
 
+void* runtimeStackPointer;
+
 int contextSwitcher(Process_t*);
 
 void dispatcher(void);

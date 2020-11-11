@@ -4,18 +4,9 @@
 
 #include "runtime.h"
 
-static void* runtimeStackPointer;
-
 int contextSwitcher(Process_t* process) {
     void* processStackPointer = process->stackPointer;
     // ((uintptr_t) process->stackPointer + 15) & ~ (uintptr_t) 0x0F;
-
-    void* jumpTo = process->instructionPointer;
-
-    int elem;
-    printf("current stack location: %p\n", &elem);
-
-    // missing pop for rbp
 
     // libdyld.dylib`stack_not_16_byte_aligned_error
     // so far, the solution to this error is to push the prior to jumping
@@ -41,7 +32,8 @@ int contextSwitcher(Process_t* process) {
         push %%r13 \n\
         push %%r14 \n\
         push %%r15 \n\
-        mov %%rsp, %1 \n\
+	    movq _runtimeStackPointer@GOTPCREL(%%rip), %%rax \n\
+        mov %%rsp, (%%rax) \n\
         mov %0, %%rsp \n\
         pop %%r15 \n\
         pop %%r14 \n\
@@ -53,17 +45,17 @@ int contextSwitcher(Process_t* process) {
         pop %%r8 \n\
         pop %%rsi \n\
         pop %%rdi \n\
+        pop %%rbp \n\
         pop %%rdx \n\
         pop %%rcx \n\
         pop %%rbx \n\
         pop %%rax \n\
         popf \n\
-        push $0 \n\
-        jmp *%2 \n\
+        jmp *(%%rbp) \n\
         .global runtimeEntryPoint \n\
         runtimeEntryPoint: \n\
-        mov %%rsp, %0 \n\
-        mov %1, %%rsp \n\
+	    movq _runtimeStackPointer@GOTPCREL(%%rip), %%rax \n\
+        movq (%%rax), %%rsp \n\
         pop %%r15 \n\
         pop %%r14 \n\
         pop %%r13 \n\
@@ -74,12 +66,13 @@ int contextSwitcher(Process_t* process) {
         pop %%r8 \n\
         pop %%rsi \n\
         pop %%rdi \n\
+        pop %%rbp \n\
         pop %%rdx \n\
         pop %%rcx \n\
         pop %%rbx \n\
         pop %%rax \n\
         "
-        : "+r" (processStackPointer), "+r" (runtimeStackPointer), "+m" (jumpTo)
+        : "+r" (processStackPointer)
         :
         :
     );
