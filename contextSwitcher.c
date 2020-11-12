@@ -5,17 +5,19 @@
 #include "runtime.h"
 
 int contextSwitcher(Process_t* process) {
-    void* processStackPointer = process->stackPointer;
-    // ((uintptr_t) process->stackPointer + 15) & ~ (uintptr_t) 0x0F;
+    runtimeStackPointer = process->stackPointer;
 
-    // libdyld.dylib`stack_not_16_byte_aligned_error
-    // so far, the solution to this error is to push the prior to jumping
+    printf("process pointer: %p\n", runtimeStackPointer);
+
+    // osx requirment:
+    // stack_not_16_byte_aligned_error
 
     // the optional volatile qualifier has no effect
     // all basic asm blocks are implicitly volatile
 
     // pushf: push lower 16 bits of EFLAGS
     asm ("\
+        push $0 \n\
         pushf \n\
         push %%rax \n\
         push %%rbx \n\
@@ -32,9 +34,10 @@ int contextSwitcher(Process_t* process) {
         push %%r13 \n\
         push %%r14 \n\
         push %%r15 \n\
-	    movq _runtimeStackPointer@GOTPCREL(%%rip), %%rax \n\
+	    mov _runtimeStackPointer@GOTPCREL(%%rip), %%rax \n\
+        mov (%%rax), %%rbx \n\
         mov %%rsp, (%%rax) \n\
-        mov %0, %%rsp \n\
+        mov %%rbx, %%rsp \n\
         pop %%r15 \n\
         pop %%r14 \n\
         pop %%r13 \n\
@@ -51,11 +54,31 @@ int contextSwitcher(Process_t* process) {
         pop %%rbx \n\
         pop %%rax \n\
         popf \n\
-        jmp *(%%rbp) \n\
+        add $8, %%rsp \n\
+        ret \n\
         .global runtimeEntryPoint \n\
         runtimeEntryPoint: \n\
-	    movq _runtimeStackPointer@GOTPCREL(%%rip), %%rax \n\
-        movq (%%rax), %%rsp \n\
+        push $0 \n\
+        pushf \n\
+        push %%rax \n\
+        push %%rbx \n\
+        push %%rcx \n\
+        push %%rdx \n\
+        push %%rbp \n\
+        push %%rdi \n\
+        push %%rsi \n\
+        push %%r8 \n\
+        push %%r9 \n\
+        push %%r10 \n\
+        push %%r11 \n\
+        push %%r12 \n\
+        push %%r13 \n\
+        push %%r14 \n\
+        push %%r15 \n\
+        mov %%rsp, %%rbx \n\
+	    mov _runtimeStackPointer@GOTPCREL(%%rip), %%rax \n\
+        mov (%%rax), %%rsp \n\
+        mov %%rbx, (%%rax) \n\
         pop %%r15 \n\
         pop %%r14 \n\
         pop %%r13 \n\
@@ -72,15 +95,16 @@ int contextSwitcher(Process_t* process) {
         pop %%rbx \n\
         pop %%rax \n\
         popf \n\
+        add $8, %%rsp \n\
         "
-        : "+r" (processStackPointer)
         :
-        : "rax"
+        :
+        : "rax", "rbx"
     );
 
     printf("SURVIVER\n");
 
-    // process->stackPointer = processStackPointer;
+    process->stackPointer = runtimeStackPointer;
 
     return 0;
 }

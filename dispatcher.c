@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "runtime.h"
 
 void dispatcher() {
@@ -6,12 +9,16 @@ void dispatcher() {
     for(;;) {
         Process_t* currentProcess = dequeReady();
 
+        if (currentProcess == NULL) {
+            printf("dispatcher: current process equal to null");
+        }
+
         operation = contextSwitcher(currentProcess);
 
         switch (operation)
         {
         case yeild:
-            /* code */
+            enqueReady(currentProcess);
             break;
         case create:
             /* code */
