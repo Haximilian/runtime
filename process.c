@@ -1,6 +1,7 @@
 #include "runtime.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 // return null if nothing to deque
 Process_t* dequeReady(void) {
@@ -31,3 +32,21 @@ void enqueReady(Process_t* toEnque) {
 
     finalReady = toEnque;
 }
+
+void printProcess(Process_t* process) {
+    printf("----------\n");
+    printf("identifier: %d\n", process->identifier);
+    printf("stackPointer: %p\n", process->stackPointer);
+    printf("next: %p\n", process->next);
+    printf("----------\n");
+}
+
+void printReadyQueue() {
+    Process_t* curr;
+    for (curr = initialReady; curr; curr = curr->next) {
+        printProcess(curr);
+    }
+}
+
+// add functions to serialize the queue for sending to client
+// add previous pointer

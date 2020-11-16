@@ -1,19 +1,20 @@
 #define CONCURENCY 32
 
-#define STACKSIZE 1024
+#define STACKSIZE 4096
 
 #define TRUE 1
 #define FALSE 0
 
 enum Operation {
     yeild,
-    create
+    create,
+    send,
+    receive
 };
 
 typedef struct Process {
     int identifier;
     void* stackPointer;
-    void* instructionPointer;
     struct Process* next;
 } Process_t;
 
@@ -34,7 +35,6 @@ typedef struct Context {
     void* rbx;
     void* rax;
     void* eflags;
-    void* stackAlignmentPadding;
     void* instructionPointer;
 } Context_t;
 
@@ -58,6 +58,8 @@ void createProcess(void (*)(void));
 Process_t* dequeReady(void);
 
 void enqueReady(Process_t*);
+
+void printReadyQueue(void);
 
 Process_t* dequeFree(void);
 

@@ -7,17 +7,15 @@
 int contextSwitcher(Process_t* process) {
     runtimeStackPointer = process->stackPointer;
 
-    printf("process pointer: %p\n", runtimeStackPointer);
-
-    // osx requirment:
-    // stack_not_16_byte_aligned_error
+    // if you remove this line or replace it another syscall such as sleep,
+    // you'll receive a stack_not_16_byte_aligned_error
+    printf("context switch\n");
 
     // the optional volatile qualifier has no effect
     // all basic asm blocks are implicitly volatile
 
     // pushf: push lower 16 bits of EFLAGS
     asm ("\
-        push $0 \n\
         pushf \n\
         push %%rax \n\
         push %%rbx \n\
@@ -54,11 +52,9 @@ int contextSwitcher(Process_t* process) {
         pop %%rbx \n\
         pop %%rax \n\
         popf \n\
-        add $8, %%rsp \n\
         ret \n\
         .global runtimeEntryPoint \n\
         runtimeEntryPoint: \n\
-        push $0 \n\
         pushf \n\
         push %%rax \n\
         push %%rbx \n\
@@ -95,14 +91,11 @@ int contextSwitcher(Process_t* process) {
         pop %%rbx \n\
         pop %%rax \n\
         popf \n\
-        add $8, %%rsp \n\
         "
         :
         :
         : "rax", "rbx"
     );
-
-    printf("SURVIVER\n");
 
     process->stackPointer = runtimeStackPointer;
 
