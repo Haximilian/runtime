@@ -1,3 +1,4 @@
+#pragma once
 #define CONCURENCY 32
 
 #define STACKSIZE 4096
@@ -38,12 +39,12 @@ typedef struct Context {
     void* instructionPointer;
 } Context_t;
 
-Process_t* finalReady;
-Process_t* initialReady;
-Process_t* finalFree;
-Process_t* initialFree;
+extern Process_t* finalReady;
+extern Process_t* initialReady;
+extern Process_t* finalFree;
+extern Process_t* initialFree;
 
-void* runtimeStackPointer;
+extern void* runtimeStackPointer;
 
 extern void runtimeEntryPoint(void) asm("runtimeEntryPoint");
 

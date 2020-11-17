@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "runtime.h"
+#include "runtime.hpp"
 
 void createProcess(void (*jumpTo)(void)) {
     Process_t* toReturn = dequeFree();
@@ -14,11 +14,11 @@ void createProcess(void (*jumpTo)(void)) {
 
     // architecture:
     // stack grows towards lower addresses
-    toReturn->stackPointer = malloc(STACKSIZE) + STACKSIZE;
-    toReturn->stackPointer -= sizeof(Context_t);
+    toReturn->stackPointer = (char*) malloc(STACKSIZE) + STACKSIZE;
+    toReturn->stackPointer = (char*) toReturn->stackPointer - sizeof(Context_t);
 
     // initialize context
-    ((Context_t*) toReturn->stackPointer)->instructionPointer = jumpTo;
+    ((Context_t*) toReturn->stackPointer)->instructionPointer = (void*) jumpTo;
 
     enqueReady(toReturn);
 }

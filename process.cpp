@@ -1,7 +1,7 @@
-#include "runtime.h"
-
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "runtime.hpp"
 
 // return null if nothing to deque
 Process_t* dequeReady(void) {

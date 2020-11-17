@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "runtime.h"
-#include "user.h"
+#include "runtime.hpp"
+#include "user.hpp"
 
 int a = 0;
 

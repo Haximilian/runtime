@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#include "runtime.h"
+#include "runtime.hpp"
 
 int contextSwitcher(Process_t* process) {
     runtimeStackPointer = process->stackPointer;

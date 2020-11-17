@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "runtime.h"
-#include "user.h"
+#include "runtime.hpp"
+#include "user.hpp"
 
 void dispatcher() {
     int operation;

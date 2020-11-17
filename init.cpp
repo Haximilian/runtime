@@ -1,9 +1,16 @@
 #include <stdlib.h>
 
-#include "runtime.h"
-#include "user.h"
+#include "runtime.hpp"
+#include "user.hpp"
 
 Process_t processControlBlock[CONCURENCY];
+
+Process_t* finalReady;
+Process_t* initialReady;
+Process_t* finalFree;
+Process_t* initialFree;
+
+void* runtimeStackPointer;
 
 void initializeProcessControlBlock() {
     initialFree = processControlBlock;
