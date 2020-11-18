@@ -1,12 +1,11 @@
 #include <stdlib.h>
-
+#include <string>
 #include "runtime.hpp"
 #include "user.hpp"
 
 Process_t processControlBlock[CONCURENCY];
 
-Process_t* finalReady;
-Process_t* initialReady;
+Queue_t readyQueue;
 Process_t* finalFree;
 Process_t* initialFree;
 
@@ -31,11 +30,13 @@ void initializeProcessControlBlock() {
 int main() {
     initializeProcessControlBlock();
 
-    createProcess(sampleOneProcess);
+    initQueue(&readyQueue);
 
-    createProcess(sampleTwoProcess);
+    createProcess(sampleOneProcess, "Alpha");
 
-    createProcess(sampleThreeProcess);
+    createProcess(sampleTwoProcess, "Beta");
+
+    createProcess(sampleThreeProcess, "Delta");
 
     dispatcher();
 }

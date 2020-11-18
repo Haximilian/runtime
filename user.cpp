@@ -17,10 +17,9 @@ int invariant() {
 void sampleOneProcess() {
     int elem;
     for (;;) {
-        printf("stack pointer: %p\n", &elem);
-        printf("hello from p1\n");
-        a += 1;
-        printf("a: %d\n", a);
+        // equality not +=
+        a = 1;
+        printf("sampleOneProcess -> a: %d\n", a);
         yeildRuntime();
     }
 }
@@ -28,10 +27,8 @@ void sampleOneProcess() {
 void sampleTwoProcess() {
     int elem;
     for (;;) {
-        printf("stack pointer: %p\n", &elem);
-        printf("hello from p2\n");
         a += 5;
-        printf("a: %d\n", a);
+        printf("sampleTwoProcess -> a: %d\n", a);
         yeildRuntime();
     }
 }
@@ -39,10 +36,8 @@ void sampleTwoProcess() {
 void sampleThreeProcess() {
     int elem;
     for (;;) {
-        printf("stack pointer: %p\n", &elem);
-        printf("hello from p3\n");
         a += 10;
-        printf("a: %d\n", a);
+        printf("sampleThreeProcess -> a: %d\n", a);
         yeildRuntime();
     }
 }

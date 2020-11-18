@@ -1,10 +1,11 @@
 #include <stdlib.h>
-
+#include <iostream>
 #include "queue.hpp"
 
 void initQueue(Queue_t* queue) {
     queue->head = NULL;
     queue->tail = NULL;
+    queue->size = 0;
     return;
 }
 
@@ -16,21 +17,26 @@ void enque(Queue_t* queue, void* value) {
     Element_t* element = (Element_t*) malloc(sizeof(Element_t));
     element->object = value;
 
-    element->next = queue->head;
-    element->prev = NULL;
+    element->next = NULL;
+    element->prev = queue->tail;
 
-    queue->head = element;
-
-    if (!queue->size) {
-        queue->tail = element;
+    if (queue->tail && queue->head) {
+        queue->tail->next = element;
+    } else if (!queue->tail && !queue->head) {
+        queue->head = element;
+    } else {
+        std::cout << "queue error\n";
+        exit(0);
     }
+
+    queue->tail = element;
 
     queue->size++;
 
     return;
 }
 
-void* dequeue(Queue_t* queue, int i) {
+void* dequeue(Queue_t* queue) {
     return remove(queue, 0);
 }
 

@@ -1,10 +1,18 @@
 #pragma once
+#include <string>
+#include "queue.hpp"
+
 #define CONCURENCY 32
 
 #define STACKSIZE 4096
 
 #define TRUE 1
 #define FALSE 0
+
+enum State {
+    dead,
+    ready
+};
 
 enum Operation {
     yeild,
@@ -15,8 +23,11 @@ enum Operation {
 
 typedef struct Process {
     int identifier;
+    std::string processName;
     void* stackPointer;
+    enum State state;
     struct Process* next;
+    struct Process* prev;
 } Process_t;
 
 typedef struct Context {
@@ -39,8 +50,8 @@ typedef struct Context {
     void* instructionPointer;
 } Context_t;
 
-extern Process_t* finalReady;
-extern Process_t* initialReady;
+extern Queue_t readyQueue;
+
 extern Process_t* finalFree;
 extern Process_t* initialFree;
 
@@ -54,13 +65,9 @@ int contextSwitcher(Process_t*);
 
 void dispatcher(void);
 
-void createProcess(void (*)(void));
+void createProcess(void (*)(void), std::string);
 
-Process_t* dequeReady(void);
-
-void enqueReady(Process_t*);
-
-void printReadyQueue(void);
+void printProcess(void* process);
 
 Process_t* dequeFree(void);
 
