@@ -9,7 +9,7 @@
 #include "user.hpp"
 
 void dispatcher() {
-    int operation;
+    RuntimeRequest_t* r;
     int executionIndex;
 
     std::string currentPath;
@@ -36,20 +36,23 @@ void dispatcher() {
 
         currentPath.append(currentProcess->processName + ", ");
 
-        operation = contextSwitcher(currentProcess);
+        r = contextSwitcher(currentProcess);
 
-        switch (operation) {
-            case yeild:
+
+        switch (r->requestCode) {
+            case YEILD:
                 enque(&readyQueue, currentProcess);
                 break;
-            case create:
+            case CREATE:
                 // to implement
                 break;
-            case send:
+            case SEND:
                 // to implement
+                std::cout << "dispatcher: receive\n";
                 break;
-            case receive:
+            case RECEIVE:
                 // to implement
+                std::cout << "dispatcher: send\n";
                 break;
             default:
                 break;

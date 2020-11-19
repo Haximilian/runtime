@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <string>
+
+#include "server.hpp"
 #include "runtime.hpp"
 #include "user.hpp"
 
@@ -8,8 +10,6 @@ Process_t processControlBlock[CONCURENCY];
 Queue_t readyQueue;
 Process_t* finalFree;
 Process_t* initialFree;
-
-void* runtimeStackPointer;
 
 void initializeProcessControlBlock() {
     initialFree = processControlBlock;

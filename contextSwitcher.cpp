@@ -2,14 +2,19 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+#include <cstdarg>
+
 #include "runtime.hpp"
 
-int contextSwitcher(Process_t* process) {
+void* runtimeStackPointer;
+RuntimeRequest_t* runtimeRequestStatic;
+
+RuntimeRequest_t* contextSwitcher(Process_t* process) {
     runtimeStackPointer = process->stackPointer;
 
     // if you remove this line or replace it another syscall such as sleep,
     // you'll receive a stack_not_16_byte_aligned_error
-    printf("context switch\n");
+    printf("\n");
 
     // the optional volatile qualifier has no effect
     // all basic asm blocks are implicitly volatile
@@ -99,5 +104,5 @@ int contextSwitcher(Process_t* process) {
 
     process->stackPointer = runtimeStackPointer;
 
-    return 0;
+    return runtimeRequestStatic;
 }

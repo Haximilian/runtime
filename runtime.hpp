@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
+
 #include "queue.hpp"
+#include "runtimeCall.hpp"
 
 #define CONCURENCY 32
 
@@ -9,23 +11,15 @@
 #define TRUE 1
 #define FALSE 0
 
-enum State {
-    dead,
-    ready
-};
-
-enum Operation {
-    yeild,
-    create,
-    send,
-    receive
-};
+#define YEILD 0
+#define CREATE 1
+#define SEND 2
+#define RECEIVE 3
 
 typedef struct Process {
     int identifier;
     std::string processName;
     void* stackPointer;
-    enum State state;
     struct Process* next;
     struct Process* prev;
 } Process_t;
@@ -57,11 +51,13 @@ extern Process_t* initialFree;
 
 extern void* runtimeStackPointer;
 
+extern RuntimeRequest_t* runtimeRequestStatic;
+
 extern void runtimeEntryPoint(void) asm("runtimeEntryPoint");
 
 extern void yeildReturnPoint(void) asm("yeildReturnPoint");
 
-int contextSwitcher(Process_t*);
+RuntimeRequest_t* contextSwitcher(Process_t*);
 
 void dispatcher(void);
 
@@ -74,3 +70,7 @@ Process_t* dequeFree(void);
 void enqueFree(Process_t*);
 
 void yeildRuntime(void);
+
+void receiveMessage(std::string sender, char* receiveBuffer);
+
+void sendMessage(std::string recipient, char* sendBuffer, int size);
