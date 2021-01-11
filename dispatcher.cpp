@@ -8,36 +8,21 @@
 #include "queue.hpp"
 #include "user.hpp"
 
+Process_t* toExecute(Queue_t* readyQueue);
+
 void dispatcher() {
     RuntimeRequest_t* r;
-    int executionIndex;
 
     std::string currentPath;
 
     for(;;) {
-        std::cout << currentPath << std::endl;
-
-        if (!invariant()) {
-            printf("invariant: false\n");
-            printf("exit\n");
-            exit(0);
-        }
-
-        forallQueue(&readyQueue, printProcess);
-
-        printf("enter index of element to execute:\n");
-        std::cin >> executionIndex;
-
-        Process_t* currentProcess = (Process_t*) remove(&readyQueue, executionIndex);
+        Process_t* currentProcess = toExecute(&readyQueue);
 
         if (currentProcess == NULL) {
             printf("dispatcher: current process equal to null");
         }
 
-        currentPath.append(currentProcess->processName + ", ");
-
         r = contextSwitcher(currentProcess);
-
 
         switch (r->requestCode) {
             case YEILD:
@@ -46,16 +31,39 @@ void dispatcher() {
             case CREATE:
                 // to implement
                 break;
-            case SEND:
+            case LOCK:
                 // to implement
                 std::cout << "dispatcher: receive\n";
-                break;
-            case RECEIVE:
-                // to implement
-                std::cout << "dispatcher: send\n";
                 break;
             default:
                 break;
         }
     }
+}
+
+void printProcess(void* process) {
+    Process_t* castProcess = (Process_t*) process;
+    printf("%.*s, ", castProcess->processName.size(), castProcess->processName.c_str());
+}
+
+Process_t* toExecute(Queue_t* readyQueue) {
+    forallQueue(readyQueue, printProcess);
+    std::cout << std::endl;
+
+    std::string identifier;
+    std::cin >> identifier;
+
+    Element_t* e;
+    int compareResult;
+    int queuePosition = 0;
+    for (e = readyQueue->head; e; e = e->next) {
+        compareResult = identifier.compare(((Process_t*) e->object)->processName);
+        if (!compareResult) {
+            remove(readyQueue, queuePosition);
+            return (Process_t*) e->object;
+        }
+        queuePosition += 1;
+    }
+
+    return NULL;
 }

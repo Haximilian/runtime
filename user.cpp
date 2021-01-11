@@ -19,7 +19,7 @@ void sampleOneProcess() {
     for (;;) {
         // equality not +=
         a = 1;
-        printf("sampleOneProcess -> a: %d\n", a);
+        // printf("sampleOneProcess -> a: %d\n", a);
         yeildRuntime();
     }
 }
@@ -28,7 +28,7 @@ void sampleTwoProcess() {
     int elem;
     for (;;) {
         a += 5;
-        printf("sampleTwoProcess -> a: %d\n", a);
+        // printf("sampleTwoProcess -> a: %d\n", a);
         yeildRuntime();
     }
 }
@@ -37,7 +37,7 @@ void sampleThreeProcess() {
     int elem;
     for (;;) {
         a += 10;
-        printf("sampleThreeProcess -> a: %d\n", a);
+        // printf("sampleThreeProcess -> a: %d\n", a);
         yeildRuntime();
     }
 }

@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string>
 
-#include "server.hpp"
 #include "runtime.hpp"
 #include "user.hpp"
 

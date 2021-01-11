@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-
 #include "queue.hpp"
 #include "runtimeCall.hpp"
 
@@ -13,8 +12,7 @@
 
 #define YEILD 0
 #define CREATE 1
-#define SEND 2
-#define RECEIVE 3
+#define LOCK 2
 
 typedef struct Process {
     int identifier;
@@ -70,7 +68,3 @@ Process_t* dequeFree(void);
 void enqueFree(Process_t*);
 
 void yeildRuntime(void);
-
-void receiveMessage(std::string sender, char* receiveBuffer);
-
-void sendMessage(std::string recipient, char* sendBuffer, int size);

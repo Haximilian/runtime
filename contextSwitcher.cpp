@@ -9,18 +9,23 @@
 void* runtimeStackPointer;
 RuntimeRequest_t* runtimeRequestStatic;
 
+Process_t* randomVar;
+
 RuntimeRequest_t* contextSwitcher(Process_t* process) {
     runtimeStackPointer = process->stackPointer;
 
+    // randomVar = process;
+
     // if you remove this line or replace it another syscall such as sleep,
     // you'll receive a stack_not_16_byte_aligned_error
-    printf("\n");
+    // printf("");
 
     // the optional volatile qualifier has no effect
     // all basic asm blocks are implicitly volatile
 
     // pushf: push lower 16 bits of EFLAGS
     asm ("\
+        push $0 \n\
         pushf \n\
         push %%rax \n\
         push %%rbx \n\
@@ -96,13 +101,14 @@ RuntimeRequest_t* contextSwitcher(Process_t* process) {
         pop %%rbx \n\
         pop %%rax \n\
         popf \n\
+        addq $8, %%rsp \n\
         "
         :
         :
         : "rax", "rbx"
     );
 
-    process->stackPointer = runtimeStackPointer;
+    (*((&process) - 2))->stackPointer = runtimeStackPointer;
 
     return runtimeRequestStatic;
 }
