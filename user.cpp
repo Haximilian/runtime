@@ -3,7 +3,8 @@
 #include "runtime.hpp"
 #include "user.hpp"
 
-int a = 0;
+int a = 1;
+int b = 1;
 
 // return 1 if true else 0
 int invariant() {
@@ -14,11 +15,18 @@ int invariant() {
     }
 }
 
+int stateHash() {
+    int result = 17;
+    result = result * 31 + a;
+    result = result * 31 + b;
+    return result;
+}
+
 void sampleOneProcess() {
     int elem;
     for (;;) {
         // equality not +=
-        a = 1;
+        a += 3;
         // printf("sampleOneProcess -> a: %d\n", a);
         yeildRuntime();
     }
@@ -27,7 +35,7 @@ void sampleOneProcess() {
 void sampleTwoProcess() {
     int elem;
     for (;;) {
-        a += 5;
+        a *= 5;
         // printf("sampleTwoProcess -> a: %d\n", a);
         yeildRuntime();
     }
@@ -36,7 +44,7 @@ void sampleTwoProcess() {
 void sampleThreeProcess() {
     int elem;
     for (;;) {
-        a += 10;
+        b += 10;
         // printf("sampleThreeProcess -> a: %d\n", a);
         yeildRuntime();
     }

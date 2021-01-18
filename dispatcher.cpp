@@ -16,6 +16,7 @@ void dispatcher() {
     std::string currentPath;
 
     for(;;) {
+        std::cout << stateHash() << std::endl;
         Process_t* currentProcess = toExecute(&readyQueue);
 
         if (currentProcess == NULL) {

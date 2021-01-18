@@ -1,24 +1,12 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <inttypes.h>
-
-#include <cstdarg>
-
 #include "runtime.hpp"
 
 void* runtimeStackPointer;
 RuntimeRequest_t* runtimeRequestStatic;
 
-Process_t* randomVar;
-
 RuntimeRequest_t* contextSwitcher(Process_t* process) {
     runtimeStackPointer = process->stackPointer;
 
-    // randomVar = process;
-
-    // if you remove this line or replace it another syscall such as sleep,
-    // you'll receive a stack_not_16_byte_aligned_error
-    // printf("");
+    // stack_not_16_byte_aligned_error
 
     // the optional volatile qualifier has no effect
     // all basic asm blocks are implicitly volatile
