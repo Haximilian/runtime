@@ -4,83 +4,88 @@ import copy
 
 import graphviz
 
-MAXIMUM_DEPTH = 4
+MAXIMUM_DEPTH = 3
 EXECUTABLE = "./a.out"
 
 class State:
-    def __init__(self, parent, identifier, transitions, stateHash):
-        self.parent = parent
+    def __init__(self, identifier, transitions, readyQueue, stateHash):
         self.identifier = identifier
         self.transitions = transitions
+        self.readyQueue = readyQueue
         self.stateHash = stateHash
+        self.children = []
 
 class Runtime:
     def __init__(self):
-        pass
+        self.count = 0
+        self.stack = None
+        self.runtime = None
 
-    def apply(self, toApply, r, stack):
-        stateHash = None
-        readyQueue = None
+    def initialize_runtime(self):
+        self.stack = []
+        self.runtime = subprocess.Popen(EXECUTABLE, encoding="utf8", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
-        for t in toApply:
-            print(t, file=r.stdin)
-            r.stdin.flush()
+        stateHash = int(self.runtime.stdout.readline())
+        readyQueue = self.runtime.stdout.readline().strip(", \n").split(",")
 
-            stack.append(t)
-            
-            stateHash = int(r.stdout.readline())
-            readyQueue = r.stdout.readline().strip(", \n").split(",")
-        
         return (stateHash, readyQueue)
 
-r = Runtime()
+    def visit(self, transitions):
+        # initial state
+        if self.runtime is None:
+            stateHash, readyQueue = self.initialize_runtime()
 
-runtime = subprocess.Popen(EXECUTABLE, encoding="utf8", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        if transitions[:len(self.stack)] == self.stack:
+            apply = transitions[len(self.stack):]
+        else:
+            self.runtime.kill()
 
-sh = int(runtime.stdout.readline())
-readyQueue = runtime.stdout.readline().strip(", \n").split(",")
-root = State(None, 0, [], sh)
+            stateHash, readyQueue = self.initialize_runtime()
+
+            apply = transitions
+
+        for t in apply:
+            print(t, file=self.runtime.stdin)
+            self.runtime.stdin.flush()
+
+            self.stack.append(t)
+            
+            stateHash = int(self.runtime.stdout.readline())
+            readyQueue = self.runtime.stdout.readline().strip(", \n").split(",")
+
+        self.count += 1
+        return State(self.count, transitions, readyQueue, stateHash)
+
+def build_tree(root, runtime):
+    if len(root.transitions) == MAXIMUM_DEPTH:
+        return
+
+    if root.readyQueue == []:
+        return
+
+    for t in root.readyQueue:
+        child_transitions = copy.deepcopy(root.transitions)
+        child_transitions.append(t.strip())
+        child = runtime.visit(child_transitions)
+        build_tree(child, runtime)
+        root.children.append(child)
+
+def create_graph(root: State, graph):
+    graph.node(str(root.identifier), label="hash: " + str(root.stateHash))
+
+    for child in root.children:
+        create_graph(child, graph)
+        graph.edge(str(root.identifier), str(child.identifier), label=child.transitions[-1])
+
+
+runtime = Runtime()
+
+root = runtime.visit([])
+
+build_tree(root, runtime)
 
 graph = graphviz.Digraph(comment="Execution Schedules")
-graph.node(str(root.identifier), label="hash: " + str(root.stateHash))
 
-stateCount = 1
-
-searchQueue = []
-for transition in readyQueue:
-    searchQueue.append(State(root.identifier, stateCount, [transition.strip()], None))
-    stateCount += 1
-
-searchStack = []
-
-while searchQueue:
-    current = searchQueue.pop()
-
-    if current.transitions[:len(searchStack)] == searchStack:
-        toApply = current.transitions[len(searchStack):]
-
-        current.stateHash, readyQueue = r.apply(toApply, runtime, searchStack)
-    else:
-        searchStack = []
-
-        # restart process
-        runtime.kill()
-        runtime = subprocess.Popen("./a.out", encoding="utf8", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-
-        runtime.stdout.readline()
-        runtime.stdout.readline()
-
-        current.stateHash, readyQueue = r.apply(current.transitions, runtime, searchStack)
-    
-    graph.node(str(current.identifier), label="hash: " + str(current.stateHash))
-    graph.edge(str(current.parent), str(current.identifier), label=current.transitions[-1])
-
-    for transition in readyQueue:
-        t = copy.deepcopy(searchStack)
-        t.append(transition.strip())
-        if len(t) <= MAXIMUM_DEPTH:
-            s = State(current.identifier, stateCount, t, None)
-            stateCount += 1
-            searchQueue.append(s)
+create_graph(root, graph)
 
 graph.render("graph", format="jpeg")
