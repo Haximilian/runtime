@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 import subprocess
 import copy
+import json
 
 import graphviz
 
 MAXIMUM_DEPTH = 3
 EXECUTABLE = "./a.out"
 
-class State:
+class State(dict):
     def __init__(self, identifier, transitions, readyQueue, stateHash):
+        super().__init__()
+        self.__dict__ = self
         self.identifier = identifier
         self.transitions = transitions
         self.readyQueue = readyQueue
@@ -89,3 +92,6 @@ graph = graphviz.Digraph(comment="Execution Schedules")
 create_graph(root, graph)
 
 graph.render("graph", format="jpeg")
+
+with open("./schedule.json", mode="w") as f:
+    json.dump(root.__dict__, f)
