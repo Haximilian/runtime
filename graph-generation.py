@@ -5,6 +5,7 @@ import copy
 import graphviz
 
 MAXIMUM_DEPTH = 4
+EXECUTABLE = "./a.out"
 
 class State:
     def __init__(self, parent, identifier, transitions, stateHash):
@@ -13,7 +14,28 @@ class State:
         self.transitions = transitions
         self.stateHash = stateHash
 
-runtime = subprocess.Popen("./a.out", encoding="utf8", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+class Runtime:
+    def __init__(self):
+        pass
+
+    def apply(self, toApply, r, stack):
+        stateHash = None
+        readyQueue = None
+
+        for t in toApply:
+            print(t, file=r.stdin)
+            r.stdin.flush()
+
+            stack.append(t)
+            
+            stateHash = int(r.stdout.readline())
+            readyQueue = r.stdout.readline().strip(", \n").split(",")
+        
+        return (stateHash, readyQueue)
+
+r = Runtime()
+
+runtime = subprocess.Popen(EXECUTABLE, encoding="utf8", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 sh = int(runtime.stdout.readline())
 readyQueue = runtime.stdout.readline().strip(", \n").split(",")
@@ -37,14 +59,7 @@ while searchQueue:
     if current.transitions[:len(searchStack)] == searchStack:
         toApply = current.transitions[len(searchStack):]
 
-        for transition in toApply:
-            print(transition, file=runtime.stdin)
-            runtime.stdin.flush()
-            searchStack.append(transition)
-            
-            current.stateHash = int(runtime.stdout.readline())
-            readyQueue = runtime.stdout.readline().strip(", \n").split(",")
-        
+        current.stateHash, readyQueue = r.apply(toApply, runtime, searchStack)
     else:
         searchStack = []
 
@@ -55,17 +70,7 @@ while searchQueue:
         runtime.stdout.readline()
         runtime.stdout.readline()
 
-        # re-apply everything...
-        for transition in current.transitions:
-            print(transition, file=runtime.stdin)
-            runtime.stdin.flush()
-
-            # move cursor
-            current.stateHash = int(runtime.stdout.readline())
-            readyQueue = runtime.stdout.readline().strip(", \n").split(",")
-            
-            searchStack.append(transition)
-
+        current.stateHash, readyQueue = r.apply(current.transitions, runtime, searchStack)
     
     graph.node(str(current.identifier), label="hash: " + str(current.stateHash))
     graph.edge(str(current.parent), str(current.identifier), label=current.transitions[-1])
