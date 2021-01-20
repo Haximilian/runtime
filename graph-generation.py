@@ -2,6 +2,7 @@
 import subprocess
 import copy
 import json
+import jsbeautifier
 
 import graphviz
 
@@ -93,5 +94,9 @@ create_graph(root, graph)
 
 graph.render("graph", format="jpeg")
 
+opts = jsbeautifier.default_options()
+opts.indent_size = 2
+
 with open("./schedule.json", mode="w") as f:
-    json.dump(root.__dict__, f)
+    toWrite = jsbeautifier.beautify(json.dumps(root.__dict__), opts)
+    f.write(toWrite)
