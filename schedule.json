@@ -3,239 +3,291 @@
   "transitions": [],
   "readyQueue": ["Alpha", " Beta", " Delta"],
   "stateHash": 16369,
-  "children": [{
-    "identifier": 2,
-    "transitions": ["Alpha"],
-    "readyQueue": ["Beta", " Delta", " Alpha"],
-    "stateHash": 16462,
-    "children": [{
-      "identifier": 3,
-      "transitions": ["Alpha", "Beta"],
-      "readyQueue": ["Delta", " Alpha", " Beta"],
-      "stateHash": 16958,
-      "children": [{
-        "identifier": 4,
-        "transitions": ["Alpha", "Beta", "Delta"],
-        "readyQueue": ["Alpha", " Beta", " Delta"],
-        "stateHash": 16968,
-        "children": []
-      }, {
-        "identifier": 5,
-        "transitions": ["Alpha", "Beta", "Alpha"],
-        "readyQueue": ["Delta", " Beta", " Alpha"],
-        "stateHash": 17051,
-        "children": []
-      }, {
-        "identifier": 6,
-        "transitions": ["Alpha", "Beta", "Beta"],
-        "readyQueue": ["Delta", " Alpha", " Beta"],
-        "stateHash": 19438,
-        "children": []
-      }]
-    }, {
-      "identifier": 7,
-      "transitions": ["Alpha", "Delta"],
-      "readyQueue": ["Beta", " Alpha", " Delta"],
-      "stateHash": 16472,
-      "children": [{
-        "identifier": 8,
-        "transitions": ["Alpha", "Delta", "Beta"],
-        "readyQueue": ["Alpha", " Delta", " Beta"],
-        "stateHash": 16968,
-        "children": []
-      }, {
-        "identifier": 9,
-        "transitions": ["Alpha", "Delta", "Alpha"],
-        "readyQueue": ["Beta", " Delta", " Alpha"],
-        "stateHash": 16565,
-        "children": []
-      }, {
-        "identifier": 10,
-        "transitions": ["Alpha", "Delta", "Delta"],
-        "readyQueue": ["Beta", " Alpha", " Delta"],
-        "stateHash": 16482,
-        "children": []
-      }]
-    }, {
-      "identifier": 11,
-      "transitions": ["Alpha", "Alpha"],
+  "children": {
+    "Alpha": {
+      "identifier": 2,
+      "transitions": ["Alpha"],
       "readyQueue": ["Beta", " Delta", " Alpha"],
-      "stateHash": 16555,
-      "children": [{
-        "identifier": 12,
-        "transitions": ["Alpha", "Alpha", "Beta"],
-        "readyQueue": ["Delta", " Alpha", " Beta"],
-        "stateHash": 17423,
-        "children": []
-      }, {
-        "identifier": 13,
-        "transitions": ["Alpha", "Alpha", "Delta"],
-        "readyQueue": ["Beta", " Alpha", " Delta"],
-        "stateHash": 16565,
-        "children": []
-      }, {
-        "identifier": 14,
-        "transitions": ["Alpha", "Alpha", "Alpha"],
-        "readyQueue": ["Beta", " Delta", " Alpha"],
-        "stateHash": 16648,
-        "children": []
-      }]
-    }]
-  }, {
-    "identifier": 15,
-    "transitions": ["Beta"],
-    "readyQueue": ["Alpha", " Delta", " Beta"],
-    "stateHash": 16493,
-    "children": [{
-      "identifier": 16,
-      "transitions": ["Beta", "Alpha"],
-      "readyQueue": ["Delta", " Beta", " Alpha"],
-      "stateHash": 16586,
-      "children": [{
-        "identifier": 17,
-        "transitions": ["Beta", "Alpha", "Delta"],
-        "readyQueue": ["Beta", " Alpha", " Delta"],
-        "stateHash": 16596,
-        "children": []
-      }, {
-        "identifier": 18,
-        "transitions": ["Beta", "Alpha", "Beta"],
-        "readyQueue": ["Delta", " Alpha", " Beta"],
-        "stateHash": 17578,
-        "children": []
-      }, {
-        "identifier": 19,
-        "transitions": ["Beta", "Alpha", "Alpha"],
-        "readyQueue": ["Delta", " Beta", " Alpha"],
-        "stateHash": 16679,
-        "children": []
-      }]
-    }, {
-      "identifier": 20,
-      "transitions": ["Beta", "Delta"],
-      "readyQueue": ["Alpha", " Beta", " Delta"],
-      "stateHash": 16503,
-      "children": [{
-        "identifier": 21,
-        "transitions": ["Beta", "Delta", "Alpha"],
-        "readyQueue": ["Beta", " Delta", " Alpha"],
-        "stateHash": 16596,
-        "children": []
-      }, {
-        "identifier": 22,
-        "transitions": ["Beta", "Delta", "Beta"],
-        "readyQueue": ["Alpha", " Delta", " Beta"],
-        "stateHash": 17123,
-        "children": []
-      }, {
-        "identifier": 23,
-        "transitions": ["Beta", "Delta", "Delta"],
-        "readyQueue": ["Alpha", " Beta", " Delta"],
-        "stateHash": 16513,
-        "children": []
-      }]
-    }, {
-      "identifier": 24,
-      "transitions": ["Beta", "Beta"],
+      "stateHash": 16462,
+      "children": {
+        "Beta": {
+          "identifier": 3,
+          "transitions": ["Alpha", "Beta"],
+          "readyQueue": ["Delta", " Alpha", " Beta"],
+          "stateHash": 16958,
+          "children": {
+            "Delta": {
+              "identifier": 4,
+              "transitions": ["Alpha", "Beta", "Delta"],
+              "readyQueue": ["Alpha", " Beta", " Delta"],
+              "stateHash": 16968,
+              "children": {}
+            },
+            "Alpha": {
+              "identifier": 5,
+              "transitions": ["Alpha", "Beta", "Alpha"],
+              "readyQueue": ["Delta", " Beta", " Alpha"],
+              "stateHash": 17051,
+              "children": {}
+            },
+            "Beta": {
+              "identifier": 6,
+              "transitions": ["Alpha", "Beta", "Beta"],
+              "readyQueue": ["Delta", " Alpha", " Beta"],
+              "stateHash": 19438,
+              "children": {}
+            }
+          }
+        },
+        "Delta": {
+          "identifier": 7,
+          "transitions": ["Alpha", "Delta"],
+          "readyQueue": ["Beta", " Alpha", " Delta"],
+          "stateHash": 16472,
+          "children": {
+            "Beta": {
+              "identifier": 8,
+              "transitions": ["Alpha", "Delta", "Beta"],
+              "readyQueue": ["Alpha", " Delta", " Beta"],
+              "stateHash": 16968,
+              "children": {}
+            },
+            "Alpha": {
+              "identifier": 9,
+              "transitions": ["Alpha", "Delta", "Alpha"],
+              "readyQueue": ["Beta", " Delta", " Alpha"],
+              "stateHash": 16565,
+              "children": {}
+            },
+            "Delta": {
+              "identifier": 10,
+              "transitions": ["Alpha", "Delta", "Delta"],
+              "readyQueue": ["Beta", " Alpha", " Delta"],
+              "stateHash": 16482,
+              "children": {}
+            }
+          }
+        },
+        "Alpha": {
+          "identifier": 11,
+          "transitions": ["Alpha", "Alpha"],
+          "readyQueue": ["Beta", " Delta", " Alpha"],
+          "stateHash": 16555,
+          "children": {
+            "Beta": {
+              "identifier": 12,
+              "transitions": ["Alpha", "Alpha", "Beta"],
+              "readyQueue": ["Delta", " Alpha", " Beta"],
+              "stateHash": 17423,
+              "children": {}
+            },
+            "Delta": {
+              "identifier": 13,
+              "transitions": ["Alpha", "Alpha", "Delta"],
+              "readyQueue": ["Beta", " Alpha", " Delta"],
+              "stateHash": 16565,
+              "children": {}
+            },
+            "Alpha": {
+              "identifier": 14,
+              "transitions": ["Alpha", "Alpha", "Alpha"],
+              "readyQueue": ["Beta", " Delta", " Alpha"],
+              "stateHash": 16648,
+              "children": {}
+            }
+          }
+        }
+      }
+    },
+    "Beta": {
+      "identifier": 15,
+      "transitions": ["Beta"],
       "readyQueue": ["Alpha", " Delta", " Beta"],
-      "stateHash": 17113,
-      "children": [{
-        "identifier": 25,
-        "transitions": ["Beta", "Beta", "Alpha"],
-        "readyQueue": ["Delta", " Beta", " Alpha"],
-        "stateHash": 17206,
-        "children": []
-      }, {
-        "identifier": 26,
-        "transitions": ["Beta", "Beta", "Delta"],
-        "readyQueue": ["Alpha", " Beta", " Delta"],
-        "stateHash": 17123,
-        "children": []
-      }, {
-        "identifier": 27,
-        "transitions": ["Beta", "Beta", "Beta"],
-        "readyQueue": ["Alpha", " Delta", " Beta"],
-        "stateHash": 20213,
-        "children": []
-      }]
-    }]
-  }, {
-    "identifier": 28,
-    "transitions": ["Delta"],
-    "readyQueue": ["Alpha", " Beta", " Delta"],
-    "stateHash": 16379,
-    "children": [{
-      "identifier": 29,
-      "transitions": ["Delta", "Alpha"],
-      "readyQueue": ["Beta", " Delta", " Alpha"],
-      "stateHash": 16472,
-      "children": [{
-        "identifier": 30,
-        "transitions": ["Delta", "Alpha", "Beta"],
-        "readyQueue": ["Delta", " Alpha", " Beta"],
-        "stateHash": 16968,
-        "children": []
-      }, {
-        "identifier": 31,
-        "transitions": ["Delta", "Alpha", "Delta"],
-        "readyQueue": ["Beta", " Alpha", " Delta"],
-        "stateHash": 16482,
-        "children": []
-      }, {
-        "identifier": 32,
-        "transitions": ["Delta", "Alpha", "Alpha"],
-        "readyQueue": ["Beta", " Delta", " Alpha"],
-        "stateHash": 16565,
-        "children": []
-      }]
-    }, {
-      "identifier": 33,
-      "transitions": ["Delta", "Beta"],
-      "readyQueue": ["Alpha", " Delta", " Beta"],
-      "stateHash": 16503,
-      "children": [{
-        "identifier": 34,
-        "transitions": ["Delta", "Beta", "Alpha"],
-        "readyQueue": ["Delta", " Beta", " Alpha"],
-        "stateHash": 16596,
-        "children": []
-      }, {
-        "identifier": 35,
-        "transitions": ["Delta", "Beta", "Delta"],
-        "readyQueue": ["Alpha", " Beta", " Delta"],
-        "stateHash": 16513,
-        "children": []
-      }, {
-        "identifier": 36,
-        "transitions": ["Delta", "Beta", "Beta"],
-        "readyQueue": ["Alpha", " Delta", " Beta"],
-        "stateHash": 17123,
-        "children": []
-      }]
-    }, {
-      "identifier": 37,
-      "transitions": ["Delta", "Delta"],
+      "stateHash": 16493,
+      "children": {
+        "Alpha": {
+          "identifier": 16,
+          "transitions": ["Beta", "Alpha"],
+          "readyQueue": ["Delta", " Beta", " Alpha"],
+          "stateHash": 16586,
+          "children": {
+            "Delta": {
+              "identifier": 17,
+              "transitions": ["Beta", "Alpha", "Delta"],
+              "readyQueue": ["Beta", " Alpha", " Delta"],
+              "stateHash": 16596,
+              "children": {}
+            },
+            "Beta": {
+              "identifier": 18,
+              "transitions": ["Beta", "Alpha", "Beta"],
+              "readyQueue": ["Delta", " Alpha", " Beta"],
+              "stateHash": 17578,
+              "children": {}
+            },
+            "Alpha": {
+              "identifier": 19,
+              "transitions": ["Beta", "Alpha", "Alpha"],
+              "readyQueue": ["Delta", " Beta", " Alpha"],
+              "stateHash": 16679,
+              "children": {}
+            }
+          }
+        },
+        "Delta": {
+          "identifier": 20,
+          "transitions": ["Beta", "Delta"],
+          "readyQueue": ["Alpha", " Beta", " Delta"],
+          "stateHash": 16503,
+          "children": {
+            "Alpha": {
+              "identifier": 21,
+              "transitions": ["Beta", "Delta", "Alpha"],
+              "readyQueue": ["Beta", " Delta", " Alpha"],
+              "stateHash": 16596,
+              "children": {}
+            },
+            "Beta": {
+              "identifier": 22,
+              "transitions": ["Beta", "Delta", "Beta"],
+              "readyQueue": ["Alpha", " Delta", " Beta"],
+              "stateHash": 17123,
+              "children": {}
+            },
+            "Delta": {
+              "identifier": 23,
+              "transitions": ["Beta", "Delta", "Delta"],
+              "readyQueue": ["Alpha", " Beta", " Delta"],
+              "stateHash": 16513,
+              "children": {}
+            }
+          }
+        },
+        "Beta": {
+          "identifier": 24,
+          "transitions": ["Beta", "Beta"],
+          "readyQueue": ["Alpha", " Delta", " Beta"],
+          "stateHash": 17113,
+          "children": {
+            "Alpha": {
+              "identifier": 25,
+              "transitions": ["Beta", "Beta", "Alpha"],
+              "readyQueue": ["Delta", " Beta", " Alpha"],
+              "stateHash": 17206,
+              "children": {}
+            },
+            "Delta": {
+              "identifier": 26,
+              "transitions": ["Beta", "Beta", "Delta"],
+              "readyQueue": ["Alpha", " Beta", " Delta"],
+              "stateHash": 17123,
+              "children": {}
+            },
+            "Beta": {
+              "identifier": 27,
+              "transitions": ["Beta", "Beta", "Beta"],
+              "readyQueue": ["Alpha", " Delta", " Beta"],
+              "stateHash": 20213,
+              "children": {}
+            }
+          }
+        }
+      }
+    },
+    "Delta": {
+      "identifier": 28,
+      "transitions": ["Delta"],
       "readyQueue": ["Alpha", " Beta", " Delta"],
-      "stateHash": 16389,
-      "children": [{
-        "identifier": 38,
-        "transitions": ["Delta", "Delta", "Alpha"],
-        "readyQueue": ["Beta", " Delta", " Alpha"],
-        "stateHash": 16482,
-        "children": []
-      }, {
-        "identifier": 39,
-        "transitions": ["Delta", "Delta", "Beta"],
-        "readyQueue": ["Alpha", " Delta", " Beta"],
-        "stateHash": 16513,
-        "children": []
-      }, {
-        "identifier": 40,
-        "transitions": ["Delta", "Delta", "Delta"],
-        "readyQueue": ["Alpha", " Beta", " Delta"],
-        "stateHash": 16399,
-        "children": []
-      }]
-    }]
-  }]
+      "stateHash": 16379,
+      "children": {
+        "Alpha": {
+          "identifier": 29,
+          "transitions": ["Delta", "Alpha"],
+          "readyQueue": ["Beta", " Delta", " Alpha"],
+          "stateHash": 16472,
+          "children": {
+            "Beta": {
+              "identifier": 30,
+              "transitions": ["Delta", "Alpha", "Beta"],
+              "readyQueue": ["Delta", " Alpha", " Beta"],
+              "stateHash": 16968,
+              "children": {}
+            },
+            "Delta": {
+              "identifier": 31,
+              "transitions": ["Delta", "Alpha", "Delta"],
+              "readyQueue": ["Beta", " Alpha", " Delta"],
+              "stateHash": 16482,
+              "children": {}
+            },
+            "Alpha": {
+              "identifier": 32,
+              "transitions": ["Delta", "Alpha", "Alpha"],
+              "readyQueue": ["Beta", " Delta", " Alpha"],
+              "stateHash": 16565,
+              "children": {}
+            }
+          }
+        },
+        "Beta": {
+          "identifier": 33,
+          "transitions": ["Delta", "Beta"],
+          "readyQueue": ["Alpha", " Delta", " Beta"],
+          "stateHash": 16503,
+          "children": {
+            "Alpha": {
+              "identifier": 34,
+              "transitions": ["Delta", "Beta", "Alpha"],
+              "readyQueue": ["Delta", " Beta", " Alpha"],
+              "stateHash": 16596,
+              "children": {}
+            },
+            "Delta": {
+              "identifier": 35,
+              "transitions": ["Delta", "Beta", "Delta"],
+              "readyQueue": ["Alpha", " Beta", " Delta"],
+              "stateHash": 16513,
+              "children": {}
+            },
+            "Beta": {
+              "identifier": 36,
+              "transitions": ["Delta", "Beta", "Beta"],
+              "readyQueue": ["Alpha", " Delta", " Beta"],
+              "stateHash": 17123,
+              "children": {}
+            }
+          }
+        },
+        "Delta": {
+          "identifier": 37,
+          "transitions": ["Delta", "Delta"],
+          "readyQueue": ["Alpha", " Beta", " Delta"],
+          "stateHash": 16389,
+          "children": {
+            "Alpha": {
+              "identifier": 38,
+              "transitions": ["Delta", "Delta", "Alpha"],
+              "readyQueue": ["Beta", " Delta", " Alpha"],
+              "stateHash": 16482,
+              "children": {}
+            },
+            "Beta": {
+              "identifier": 39,
+              "transitions": ["Delta", "Delta", "Beta"],
+              "readyQueue": ["Alpha", " Delta", " Beta"],
+              "stateHash": 16513,
+              "children": {}
+            },
+            "Delta": {
+              "identifier": 40,
+              "transitions": ["Delta", "Delta", "Delta"],
+              "readyQueue": ["Alpha", " Beta", " Delta"],
+              "stateHash": 16399,
+              "children": {}
+            }
+          }
+        }
+      }
+    }
+  }
 }

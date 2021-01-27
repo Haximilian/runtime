@@ -17,7 +17,7 @@ class State(dict):
         self.transitions = transitions
         self.readyQueue = readyQueue
         self.stateHash = stateHash
-        self.children = []
+        self.children = {}
 
 class Runtime:
     def __init__(self):
@@ -72,12 +72,12 @@ def build_tree(root, runtime):
         child_transitions.append(t.strip())
         child = runtime.visit(child_transitions)
         build_tree(child, runtime)
-        root.children.append(child)
+        root.children[t.strip()] = (child)
 
 def create_graph(root: State, graph):
     graph.node(str(root.identifier), label="hash: " + str(root.stateHash))
 
-    for child in root.children:
+    for child in root.children.values():
         create_graph(child, graph)
         graph.edge(str(root.identifier), str(child.identifier), label=child.transitions[-1])
 
