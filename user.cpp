@@ -3,40 +3,95 @@
 #include "runtime.hpp"
 #include "user.hpp"
 
-int a = 1;
-int b = 1;
+#include "VClock.h"
+
+template <typename T>
+class rObject {
+public:
+    rObject(T);
+
+    // this method updates processes vclock
+    T read(VClock*);
+    void write(VClock*, T);
+
+    // a user process should never use this to get a value
+    // only use this to get the value to compute the state hash
+    T getValueForHash();
+private:
+    VClock v;
+    T object;
+};
+
+
+template <typename T>
+rObject<T>::rObject(T value) {
+    this->v = VClock();
+    this->object = value;
+}
+
+
+template <typename T>
+T rObject<T>::read(VClock* p) {
+    (*p).merge(this->v);
+    return this->object;
+}
+
+template <typename T>
+void rObject<T>::write(VClock* p, T value) {
+    this->v.merge(*p);
+    this->object = value;
+}
+
+template <typename T>
+T rObject<T>::getValueForHash() {
+    return this->object;
+}
+
+rObject<int> a(0);
+rObject<int> b(0);
 
 int stateHash() {
     int result = 17;
-    result = result * 31 + a;
-    result = result * 31 + b;
+    result = result * 31 + a.getValueForHash();
+    result = result * 31 + b.getValueForHash();
     return result;
 }
 
-void sampleOneProcess(Process_t* self) {
+__cdecl void sampleOneProcess(Process_t* self) {
+    // after the context is popped of then wrongfully arg is pushed and the ret addr
+    self = *(&self + 3);
+
     int elem;
     for (;;) {
-        // equality not +=
-        a += 3;
-        // printf("sampleOneProcess -> a: %d\n", a);
+        elem = a.read(&(self->vclock));
+        elem += 3;
+        a.write(&(self->vclock), elem);
         yeildRuntime();
     }
 }
 
-void sampleTwoProcess(Process_t* self) {
+__cdecl void sampleTwoProcess(Process_t* self) {
+    // after the context is popped of then wrongfully arg is pushed and the ret addr
+    self = *(&self + 3);
+
     int elem;
     for (;;) {
-        a *= 5;
-        // printf("sampleTwoProcess -> a: %d\n", a);
+        elem = a.read(&(self->vclock));
+        elem *= 5;
+        a.write(&(self->vclock), elem);
         yeildRuntime();
     }
 }
 
-void sampleThreeProcess(Process_t* self) {
+__cdecl void sampleThreeProcess(Process_t* self) {
+    // after the context is popped of then wrongfully arg is pushed and the ret addr
+    self = *(&self + 3);
+    
     int elem;
     for (;;) {
-        b += 10;
-        // printf("sampleThreeProcess -> a: %d\n", a);
+        elem = b.read(&(self->vclock));
+        elem += 10;
+        b.write(&(self->vclock), elem);
         yeildRuntime();
     }
 }

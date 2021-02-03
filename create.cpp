@@ -16,6 +16,7 @@ void createProcess(void (*jumpTo)(Process_t*), std::string processName = "") {
     }
 
     p->processName = processName;
+    p->vclock = VClock();
 
     // architecture:
     // stack grows towards lower addresses
@@ -24,6 +25,8 @@ void createProcess(void (*jumpTo)(Process_t*), std::string processName = "") {
     // user defined thread method takes a pointer as an argument
     p->stackPointer = (char*) p->stackPointer - sizeof(Process_t*);
     *((Process_t**) p->stackPointer) = p;
+    // return address
+    p->stackPointer = (char*) p->stackPointer - sizeof(void*);
 
     p->stackPointer = (char*) p->stackPointer - sizeof(Context_t);
 

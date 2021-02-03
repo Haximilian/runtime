@@ -2,6 +2,7 @@
 #include <string>
 #include "queue.hpp"
 #include "runtimeCall.hpp"
+#include "VClock.h"
 
 #define CONCURENCY 32
 
@@ -17,6 +18,7 @@
 typedef struct Process {
     int identifier;
     std::string processName;
+    VClock vclock;
     void* stackPointer;
     struct Process* next;
     struct Process* prev;
