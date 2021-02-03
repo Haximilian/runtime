@@ -6,15 +6,6 @@
 int a = 1;
 int b = 1;
 
-// return 1 if true else 0
-int invariant() {
-    if (a < 20) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 int stateHash() {
     int result = 17;
     result = result * 31 + a;
@@ -22,7 +13,7 @@ int stateHash() {
     return result;
 }
 
-void sampleOneProcess() {
+void sampleOneProcess(Process_t* self) {
     int elem;
     for (;;) {
         // equality not +=
@@ -32,7 +23,7 @@ void sampleOneProcess() {
     }
 }
 
-void sampleTwoProcess() {
+void sampleTwoProcess(Process_t* self) {
     int elem;
     for (;;) {
         a *= 5;
@@ -41,7 +32,7 @@ void sampleTwoProcess() {
     }
 }
 
-void sampleThreeProcess() {
+void sampleThreeProcess(Process_t* self) {
     int elem;
     for (;;) {
         b += 10;

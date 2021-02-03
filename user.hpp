@@ -1,5 +1,4 @@
-int invariant();
 int stateHash();
-void sampleOneProcess();
-void sampleTwoProcess();
-void sampleThreeProcess();
+void sampleOneProcess(Process_t* self);
+void sampleTwoProcess(Process_t* self);
+void sampleThreeProcess(Process_t* self);

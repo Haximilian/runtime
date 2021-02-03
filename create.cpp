@@ -6,26 +6,31 @@
 #include "queue.hpp"
 #include "runtime.hpp"
 
-void createProcess(void (*jumpTo)(void), std::string processName = "") {
-    Process_t* toReturn = dequeFree();
+void createProcess(void (*jumpTo)(Process_t*), std::string processName = "") {
+    Process_t* p = dequeFree();
 
     // check if process control block was succesfully allocated
-    if (!toReturn) {
+    if (!p) {
         printf("createProcess: dequeFree return value equal to null\n");
         exit(0);
     }
 
-    toReturn->processName = processName;
+    p->processName = processName;
 
     // architecture:
     // stack grows towards lower addresses
-    toReturn->stackPointer = (char*) malloc(STACKSIZE) + STACKSIZE;
-    toReturn->stackPointer = (char*) toReturn->stackPointer - sizeof(Context_t);
+    p->stackPointer = (char*) malloc(STACKSIZE) + STACKSIZE;
+
+    // user defined thread method takes a pointer as an argument
+    p->stackPointer = (char*) p->stackPointer - sizeof(Process_t*);
+    *((Process_t**) p->stackPointer) = p;
+
+    p->stackPointer = (char*) p->stackPointer - sizeof(Context_t);
 
     // initialize context
-    ((Context_t*) toReturn->stackPointer)->instructionPointer = (void*) jumpTo;
+    ((Context_t*) p->stackPointer)->instructionPointer = (void*) jumpTo;
 
-    enque(&readyQueue, toReturn);
+    enque(&readyQueue, p);
 }
 
 // return null if nothing to deque

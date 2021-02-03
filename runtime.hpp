@@ -5,7 +5,7 @@
 
 #define CONCURENCY 32
 
-#define STACKSIZE 4096
+#define STACKSIZE 16384
 
 #define TRUE 1
 #define FALSE 0
@@ -59,7 +59,7 @@ RuntimeRequest_t* contextSwitcher(Process_t*);
 
 void dispatcher(void);
 
-void createProcess(void (*)(void), std::string);
+void createProcess(void (*)(Process_t*), std::string);
 
 void printProcess(void* process);
 
